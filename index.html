@@ -1,4 +1,8 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Taller de Fracciones Algebraicas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,6 +73,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .gap{display:inline-block;width:1.3em}
 .tx{font-family:var(--f-ui);font-style:normal;font-size:.62em;font-weight:700;letter-spacing:.02em;color:var(--muted)}
 .pa{font-style:normal}
+.bp{display:inline-flex;align-items:center}
+.bp .pl{font-size:2em;line-height:1;font-weight:400;transform:scaleX(.62);margin:0 -.08em}
+.jrule{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:15px;margin:0;padding:10px 12px;border:1px dashed var(--line);border-radius:12px;background:var(--soft)}
+.jrule b{font-family:var(--f-display)}
 
 /* Recuadros de color: el número es el orden */
 .bx{position:relative;display:inline-flex;align-items:center;padding:.12em .16em;margin:.08em .07em;--o:1}
@@ -200,6 +208,9 @@ select.btn{appearance:auto}
   .in{width:8ch}
 }
 </style>
+</head>
+<body>
+
 
 <div class="wrap">
   <header class="top">
@@ -210,6 +221,7 @@ select.btn{appearance:auto}
     <div class="tabs" role="tablist" aria-label="Secciones">
       <button role="tab" id="tab-aprende" aria-selected="true" aria-controls="view-aprende">Aprende</button>
       <button role="tab" id="tab-practica" aria-selected="false" aria-controls="view-practica">Practica</button>
+      <button role="tab" id="tab-jerarquia" aria-selected="false" aria-controls="view-practica">Jerarquía</button>
     </div>
   </header>
 
@@ -492,6 +504,86 @@ const PRACTICE = [
  ]},
 ];
 
+/* ---------- Pestaña Jerarquía: 15 ejercicios combinados ---------- */
+const JER = [
+ {id:'h1', cat:'jer', lvl:1, src:'1/x+2/x*x/(x+1)', x:r`\f{1}{x}+\f{2}{x}*\f{x}{x+1}`, steps:[
+  {t:'Bloque 1: resuelve primero la multiplicación', x:r`\b{N}{2}{\f{1}{x}+\b{N}{1}{\f{2}{x}*\f{x}{x+1}}}`, h:'La x de arriba se divide con la x de abajo: su cociente es 1.', s:[{k:'frac',n:'2',d:'x+1'}]},
+  {t:'Bloque 2: escribe el mcm de los denominadores', x:r`\f{1}{\b{M}{2}{x}}+\f{2}{\b{M}{2}{x+1}}`, h:'x y x + 1 no tienen factores en común: multiplícalos.', s:[{k:'expr',pre:'mcm =',e:'x(x+1)'}]},
+  {t:'Suma los numeradores ya amplificados', x:r`\f{\b{N}{2}{1(x+1)+2x}}{x(x+1)}`, h:'x + 1 + 2x: reúne las x.', s:[{k:'expr',pre:'Numerador =',e:'3x+1'}]},
+  {t:'Escribe el resultado', x:r`\f{3x+1}{x(x+1)}`, h:'3x + 1 no comparte factores con el denominador.', s:[{k:'frac',n:'3x+1',d:'x(x+1)'}]},
+ ]},
+ {id:'h2', cat:'jer', lvl:1, src:'1+((x^2-9)/x)/((x-3)/x)', x:r`1+\f{x^2-9}{x}\d\f{x-3}{x}`, steps:[
+  {t:'Bloque 1: resuelve primero la división', x:r`\b{N}{2}{1+\b{V}{1}{\f{x^2-9}{x}\d\f{x-3}{x}}}`, h:'Multiplica por el recíproco x/(x − 3) y factoriza x² − 9.', s:[{k:'expr',pre:'Bloque 1 =',e:'x+3',err:[['(x-2)/(x-3)','Sumaste antes de dividir. La división va primero.']]}]},
+  {t:'Bloque 2: suma y escribe el resultado', x:r`\b{N}{2}{1+(x+3)}`, h:'Suma los números.', s:[{k:'expr',pre:'Resultado =',e:'x+4'}]},
+ ]},
+ {id:'h3', cat:'jer', lvl:1, src:'x/(x-1)-1/(x-1)*(x^2-x)/x', x:r`\f{x}{x-1}-\f{1}{x-1}*\f{x^2-x}{x}`, steps:[
+  {t:'Bloque 1: resuelve primero la multiplicación', x:r`\b{N}{2}{\f{x}{x-1}-\b{N}{1}{\f{1}{x-1}*\f{x^2-x}{x}}}`, h:'Factoriza x² − x = x(x − 1) y divide entre factores comunes.', s:[{k:'expr',pre:'Bloque 1 =',e:'1'}]},
+  {t:'Bloque 2: resta y escribe el resultado', x:r`\b{N}{2}{\f{x}{x-1}-1}`, h:'1 = (x − 1)/(x − 1). Cuida el signo: x − (x − 1).', s:[{k:'frac',n:'1',d:'x-1'}]},
+ ]},
+ {id:'h4', cat:'jer', lvl:1, src:'4/(x+2)+(6/(x^2-4))/(3/(x-2))', x:r`\f{4}{x+2}+\f{6}{x^2-4}\d\f{3}{x-2}`, steps:[
+  {t:'Bloque 1: resuelve primero la división', x:r`\b{N}{2}{\f{4}{x+2}+\b{V}{1}{\f{6}{x^2-4}\d\f{3}{x-2}}}`, h:'Multiplica por (x − 2)/3 y factoriza x² − 4 = (x − 2)(x + 2).', s:[{k:'frac',n:'2',d:'x+2'}]},
+  {t:'Bloque 2: suma (mismo denominador) y escribe el resultado', x:r`\b{N}{2}{\f{4}{x+2}+\f{2}{x+2}}`, h:'Con el mismo denominador solo se suman los numeradores.', s:[{k:'frac',n:'6',d:'x+2'}]},
+ ]},
+ {id:'h5', cat:'jer', lvl:1, src:'5/x-(x+3)/x^2*x/(x+3)', x:r`\f{5}{x}-\f{x+3}{x^2}*\f{x}{x+3}`, steps:[
+  {t:'Bloque 1: resuelve primero la multiplicación', x:r`\b{N}{2}{\f{5}{x}-\b{N}{1}{\f{x+3}{x^2}*\f{x}{x+3}}}`, h:'(x + 3) se divide con (x + 3); la x de arriba con una x de x².', s:[{k:'frac',n:'1',d:'x'}]},
+  {t:'Bloque 2: resta y escribe el resultado', x:r`\b{N}{2}{\f{5}{x}-\f{1}{x}}`, h:'Mismo denominador: resta los numeradores.', s:[{k:'frac',n:'4',d:'x'}]},
+ ]},
+
+ {id:'h6', cat:'jer', lvl:2, src:'3/(x-2)-(x+1)/(x^2-4)*(x+2)/(x+1)', x:r`\f{3}{x-2}-\f{x+1}{x^2-4}*\f{x+2}{x+1}`, steps:[
+  {t:'Bloque 1: factoriza x² − 4', x:r`\b{N}{2}{\f{3}{x-2}-\b{N}{1}{\f{x+1}{\b{F}{1}{x^2-4}}*\f{x+2}{x+1}}}`, h:'Diferencia de cuadrados.', s:[{k:'fac',e:['x-2','x+2'],of:'x^2-4'}]},
+  {t:'Bloque 1: divide entre factores comunes y escribe su valor', x:r`\f{3}{x-2}-\b{N}{1}{\f{x+1}{(x-2)(x+2)}*\f{x+2}{x+1}}`, h:'Se van (x + 1) y (x + 2).', s:[{k:'frac',n:'1',d:'x-2'}]},
+  {t:'Bloque 2: resta y escribe el resultado', x:r`\b{N}{2}{\f{3}{x-2}-\f{1}{x-2}}`, h:'Mismo denominador: resta los numeradores.', s:[{k:'frac',n:'2',d:'x-2'}]},
+ ]},
+ {id:'h7', cat:'jer', lvl:2, src:'x/(x+2)+((x^2-1)/(x+2))/(x+1)', x:r`\f{x}{x+2}+\f{x^2-1}{x+2}\d(x+1)`, steps:[
+  {t:'Bloque 1: escribe el recíproco del divisor', x:r`\b{N}{2}{\f{x}{x+2}+\b{V}{1}{\f{x^2-1}{x+2}\d(x+1)}}`, h:'x + 1 es lo mismo que (x + 1)/1.', s:[{k:'frac',n:'1',d:'x+1'}]},
+  {t:'Bloque 1: factoriza, simplifica y escribe su valor', x:r`\f{x}{x+2}+\b{V}{1}{\f{x^2-1}{x+2}*\f{1}{x+1}}`, h:'x² − 1 = (x − 1)(x + 1).', s:[{k:'frac',n:'x-1',d:'x+2'}]},
+  {t:'Bloque 2: suma y escribe el resultado', x:r`\b{N}{2}{\f{x}{x+2}+\f{x-1}{x+2}}`, h:'Mismo denominador: suma los numeradores.', s:[{k:'frac',n:'2x-1',d:'x+2'}]},
+ ]},
+ {id:'h8', cat:'jer', lvl:2, src:'1/x+1/(x+1)*(x^2+x)/(x+2)', x:r`\f{1}{x}+\f{1}{x+1}*\f{x^2+x}{x+2}`, steps:[
+  {t:'Bloque 1: resuelve primero la multiplicación', x:r`\b{N}{2}{\f{1}{x}+\b{N}{1}{\f{1}{x+1}*\f{x^2+x}{x+2}}}`, h:'x² + x = x(x + 1).', s:[{k:'frac',n:'x',d:'x+2'}]},
+  {t:'Bloque 2: escribe el mcm', x:r`\f{1}{\b{M}{2}{x}}+\f{x}{\b{M}{2}{x+2}}`, h:'x y x + 2 no tienen factores en común.', s:[{k:'expr',pre:'mcm =',e:'x(x+2)'}]},
+  {t:'Suma los numeradores ya amplificados', x:r`\f{\b{N}{2}{1(x+2)+x*x}}{x(x+2)}`, h:'x + 2 + x²: ordénalo de mayor a menor grado.', s:[{k:'expr',pre:'Numerador =',e:'x^2+x+2'}]},
+  {t:'Escribe el resultado', x:r`\f{x^2+x+2}{x(x+2)}`, h:'x² + x + 2 no se factoriza con números reales.', s:[{k:'frac',n:'x^2+x+2',d:'x(x+2)'}]},
+ ]},
+ {id:'h9', cat:'jer', lvl:2, src:'((x^2-4)/(x+1))/((x-2)/(x+1))-x', x:r`\f{x^2-4}{x+1}\d\f{x-2}{x+1}-x`, steps:[
+  {t:'Bloque 1: resuelve primero la división', x:r`\b{N}{2}{\b{V}{1}{\f{x^2-4}{x+1}\d\f{x-2}{x+1}}-x}`, h:'Multiplica por el recíproco (x + 1)/(x − 2) y factoriza x² − 4.', s:[{k:'expr',pre:'Bloque 1 =',e:'x+2'}]},
+  {t:'Bloque 2: resta y escribe el resultado', x:r`\b{N}{2}{(x+2)-x}`, h:'Las x se anulan.', s:[{k:'expr',pre:'Resultado =',e:'2'}]},
+ ]},
+ {id:'h10', cat:'jer', lvl:2, src:'2/x+((x^2-9)/(x^2+3x))/((x-3)/2)', x:r`\f{2}{x}+\f{x^2-9}{x^2+3x}\d\f{x-3}{2}`, steps:[
+  {t:'Bloque 1: factoriza el numerador', x:r`\b{N}{2}{\f{2}{x}+\b{V}{1}{\f{\b{F}{1}{x^2-9}}{x^2+3x}\d\f{x-3}{2}}}`, h:'Diferencia de cuadrados.', s:[{k:'fac',e:['x-3','x+3'],of:'x^2-9'}]},
+  {t:'Bloque 1: factoriza el denominador', x:r`\f{2}{x}+\b{V}{1}{\f{(x-3)(x+3)}{\b{F}{1}{x^2+3x}}\d\f{x-3}{2}}`, h:'Factor común x.', s:[{k:'fac',e:['x','x+3'],of:'x^2+3x'}]},
+  {t:'Bloque 1: multiplica por el recíproco y simplifica', x:r`\f{2}{x}+\b{V}{1}{\f{(x-3)(x+3)}{x(x+3)}*\f{2}{x-3}}`, h:'Se van (x − 3) y (x + 3).', s:[{k:'frac',n:'2',d:'x'}]},
+  {t:'Bloque 2: suma y escribe el resultado', x:r`\b{N}{2}{\f{2}{x}+\f{2}{x}}`, h:'Mismo denominador: suma los numeradores.', s:[{k:'frac',n:'4',d:'x'}]},
+ ]},
+
+ {id:'h11', cat:'jer', lvl:3, src:'(1/x+1/2)*2x/(x+2)', x:r`\p{\f{1}{x}+\f{1}{2}}*\f{2x}{x+2}`, steps:[
+  {t:'Primero el paréntesis: escríbelo como una sola fracción', x:r`\b{N}{2}{\b{N}{1}{\p{\f{1}{x}+\f{1}{2}}}*\f{2x}{x+2}}`, h:'El mcm de x y 2 es 2x.', s:[{k:'frac',n:'x+2',d:'2x'}]},
+  {t:'Ahora multiplica y escribe el resultado', x:r`\b{N}{2}{\f{x+2}{2x}*\f{2x}{x+2}}`, h:'Cada factor de arriba tiene su pareja abajo.', s:[{k:'expr',pre:'Resultado =',e:'1'}]},
+ ]},
+ {id:'h12', cat:'jer', lvl:3, src:'(x/(x-1)-1)/(1/(x^2-1))', x:r`\p{\f{x}{x-1}-1}\d\f{1}{x^2-1}`, steps:[
+  {t:'Primero el paréntesis: escríbelo como una sola fracción', x:r`\b{N}{2}{\b{N}{1}{\p{\f{x}{x-1}-1}}\d\f{1}{x^2-1}}`, h:'1 = (x − 1)/(x − 1), y x − (x − 1) = 1.', s:[{k:'frac',n:'1',d:'x-1'}]},
+  {t:'Escribe el recíproco del divisor', x:r`\f{1}{x-1}\b{V}{2}{\d\f{1}{x^2-1}}`, h:'El recíproco de 1/(x² − 1) no lleva denominador.', s:[{k:'expr',pre:'Recíproco =',e:'x^2-1'}]},
+  {t:'Factoriza, simplifica y escribe el resultado', x:r`\f{1}{x-1}*\b{F}{3}{(x^2-1)}`, h:'x² − 1 = (x − 1)(x + 1).', s:[{k:'expr',pre:'Resultado =',e:'x+1'}]},
+ ]},
+ {id:'h13', cat:'jer', lvl:3, src:'(x^2-1)/x*1/(x+1)+3/x^2*x', x:r`\f{x^2-1}{x}*\f{1}{x+1}+\f{3}{x^2}*x`, steps:[
+  {t:'Bloque 1: la primera multiplicación', x:r`\b{N}{3}{\b{N}{1}{\f{x^2-1}{x}*\f{1}{x+1}}+\b{N}{2}{\f{3}{x^2}*x}}`, h:'Factoriza x² − 1 = (x − 1)(x + 1).', s:[{k:'frac',n:'x-1',d:'x'}]},
+  {t:'Bloque 2: la segunda multiplicación', x:r`\f{x-1}{x}+\b{N}{2}{\f{3}{x^2}*x}`, h:'x entre x² deja una x abajo.', s:[{k:'frac',n:'3',d:'x'}]},
+  {t:'Bloque 3: suma y escribe el resultado', x:r`\b{N}{3}{\f{x-1}{x}+\f{3}{x}}`, h:'Mismo denominador: suma los numeradores.', s:[{k:'frac',n:'x+2',d:'x'}]},
+ ]},
+ {id:'h14', cat:'jer', lvl:3, src:'(x+2)/(x-3)+((x^2+x-2)/(x^2-9))/((x-1)/(x+3))', x:r`\f{x+2}{x-3}+\f{x^2+x-2}{x^2-9}\d\f{x-1}{x+3}`, steps:[
+  {t:'Bloque 1: factoriza x² + x − 2', x:r`\b{N}{2}{\f{x+2}{x-3}+\b{V}{1}{\f{\b{F}{1}{x^2+x-2}}{x^2-9}\d\f{x-1}{x+3}}}`, h:'Dos números que multiplican −2 y suman 1: 2 y −1.', s:[{k:'fac',e:['x+2','x-1'],of:'x^2+x-2'}]},
+  {t:'Bloque 1: factoriza x² − 9', x:r`\f{x+2}{x-3}+\b{V}{1}{\f{(x+2)(x-1)}{\b{F}{1}{x^2-9}}\d\f{x-1}{x+3}}`, h:'Diferencia de cuadrados.', s:[{k:'fac',e:['x-3','x+3'],of:'x^2-9'}]},
+  {t:'Bloque 1: multiplica por el recíproco y simplifica', x:r`\f{x+2}{x-3}+\b{V}{1}{\f{(x+2)(x-1)}{(x-3)(x+3)}*\f{x+3}{x-1}}`, h:'Se van (x − 1) y (x + 3).', s:[{k:'frac',n:'x+2',d:'x-3'}]},
+  {t:'Bloque 2: suma y escribe el resultado', x:r`\b{N}{2}{\f{x+2}{x-3}+\f{x+2}{x-3}}`, h:'Mismo denominador: suma los numeradores.', s:[{k:'frac',n:'2x+4',d:'x-3'}]},
+ ]},
+ {id:'h15', cat:'jer', lvl:3, src:'(1-1/x)/(1-1/x^2)+x/(x+1)', x:r`\p{1-\f{1}{x}}\d\p{1-\f{1}{x^2}}+\f{x}{x+1}`, steps:[
+  {t:'Paréntesis 1: escríbelo como una sola fracción', x:r`\b{M}{1}{\p{1-\f{1}{x}}}\d\p{1-\f{1}{x^2}}+\f{x}{x+1}`, h:'1 = x/x.', s:[{k:'frac',n:'x-1',d:'x'}]},
+  {t:'Paréntesis 2: escríbelo como una sola fracción', x:r`\f{x-1}{x}\d\b{M}{1}{\p{1-\f{1}{x^2}}}+\f{x}{x+1}`, h:'1 = x²/x².', s:[{k:'frac',n:'x^2-1',d:'x^2'}]},
+  {t:'Bloque 2: la división. Escribe su valor simplificado', x:r`\b{V}{2}{\f{x-1}{x}\d\f{x^2-1}{x^2}}+\f{x}{x+1}`, h:'Multiplica por x²/(x² − 1) y factoriza x² − 1.', s:[{k:'frac',n:'x',d:'x+1'}]},
+  {t:'Bloque 3: suma y escribe el resultado', x:r`\b{N}{3}{\f{x}{x+1}+\f{x}{x+1}}`, h:'Mismo denominador: suma los numeradores.', s:[{k:'frac',n:'2x',d:'x+1'}]},
+ ]},
+];
+
 /* ---------- Dibujo de notación ---------- */
 function R(s){
   let i = 0;
@@ -508,6 +600,7 @@ function R(s){
         if (cmd === 'f'){ const a = grp(), b = grp(); out += `<span class="fr"><span class="fn">${a}</span><span class="fd">${b}</span></span>`; last = 'atom'; }
         else if (cmd === 'b'){ const col = raw(), n = raw(); const inner = grp(); out += `<span class="bx bx-${col}"${n ? ` style="--o:${n}"` : ''}>${n ? `<span class="bn" aria-hidden="true">${n}</span>` : ''}<span class="bi">${inner}</span></span>`; last = 'atom'; }
         else if (cmd === 'x'){ out += `<span class="xc">${grp()}</span>`; last = 'atom'; }
+        else if (cmd === 'p'){ out += `<span class="bp"><span class="pl">(</span>${grp()}<span class="pl">)</span></span>`; last = 'atom'; }
         else if (cmd === 'r'){ out += `<span class="res">${grp()}</span>`; last = 'atom'; }
         else if (cmd === 't'){ out += `<span class="tx">${raw()}</span>`; last = 'atom'; }
         else if (cmd === 'q'){ out += '<span class="gap"></span>'; last = 'op'; }
@@ -673,13 +766,17 @@ function init(){
 
   /* Navegación */
   function show(view){
-    const a = view !== 'practica';
+    const v = view === 'practica' || view === 'jerarquia' ? view : 'aprende';
+    const a = v === 'aprende';
     $('#view-aprende').hidden = !a; $('#view-practica').hidden = a;
-    $('#tab-aprende').setAttribute('aria-selected', a); $('#tab-practica').setAttribute('aria-selected', !a);
-    if (!a){ stopPlay(); renderP(); }
+    $('#tab-aprende').setAttribute('aria-selected', v === 'aprende');
+    $('#tab-practica').setAttribute('aria-selected', v === 'practica');
+    $('#tab-jerarquia').setAttribute('aria-selected', v === 'jerarquia');
+    if (!a){ stopPlay(); PS.set = v === 'jerarquia' ? 'jer' : 'base'; resetAttempt(); renderP(); }
   }
   $('#tab-aprende').onclick = () => { location.hash = 'aprende'; };
   $('#tab-practica').onclick = () => { location.hash = 'practica'; };
+  $('#tab-jerarquia').onclick = () => { location.hash = 'jerarquia'; };
   window.addEventListener('hashchange', () => show(location.hash.slice(1)));
 
   /* Leyenda */
@@ -729,7 +826,7 @@ function init(){
   $('#lgo').onclick = () => {
     const list = PRACTICE.filter(p => p.cat === L.cat);
     const next = list.find(p => !(prog[p.id] && prog[p.id].done)) || list[0];
-    if (next){ PS.id = next.id; resetAttempt(); }
+    if (next){ PS.ids.base = next.id; resetAttempt(); }
     location.hash = 'practica';
   };
   document.addEventListener('keydown', e => {
@@ -740,22 +837,29 @@ function init(){
 
   /* ===== Practica ===== */
   let prog = store.get('fa-prog-v1', {});
-  const PS = {id: PRACTICE[0].id, att:0, helped:false, hint:false, active:null, keypad: store.get('fa-keypad', true)};
+  const SETS = {base: PRACTICE, jer: JER};
+  const PS = {set:'base', ids:{base: PRACTICE[0].id, jer: JER[0].id}, att:0, helped:false, hint:false, active:null, keypad: store.get('fa-keypad', true)};
+  Object.defineProperty(PS, 'id', {get(){ return this.ids[this.set]; }, set(v){ this.ids[this.set] = v; }});
+  const curList = () => SETS[PS.set];
   const saveProg = () => store.set('fa-prog-v1', prog);
   const pOf = id => prog[id] || (prog[id] = {step:0, ans:[], first:[], helped:[], done:false});
-  const exById = id => PRACTICE.find(p => p.id === id);
+  const exById = id => PRACTICE.find(p => p.id === id) || JER.find(p => p.id === id);
   function resetAttempt(){ PS.att = 0; PS.helped = false; PS.hint = false; PS.active = null; }
-  {
-    const firstOpen = PRACTICE.find(p => prog[p.id] && !prog[p.id].done && prog[p.id].step > 0) || PRACTICE.find(p => !(prog[p.id] && prog[p.id].done));
-    if (firstOpen) PS.id = firstOpen.id;
+  for (const k of ['base', 'jer']){
+    const L2 = SETS[k];
+    const firstOpen = L2.find(p => prog[p.id] && !prog[p.id].done && prog[p.id].step > 0) || L2.find(p => !(prog[p.id] && prog[p.id].done));
+    if (firstOpen) PS.ids[k] = firstOpen.id;
   }
 
   function renderPList(){
     let n = 0;
-    $('#plist').innerHTML = CATS.map(c => {
-      const items = PRACTICE.filter(p => p.cat === c.id);
-      if (!items.length) return '';
-      return `<div class="pgroup"><h4>${c.name}</h4>${items.map(p => {
+    const list = curList();
+    const groups = PS.set === 'jer'
+      ? [1, 2, 3].map(l => ({name: LV[l], items: list.filter(p => p.lvl === l)}))
+      : CATS.map(c => ({name: c.name, items: list.filter(p => p.cat === c.id)}));
+    $('#plist').innerHTML = groups.map(gr => {
+      if (!gr.items.length) return '';
+      return `<div class="pgroup"><h4>${gr.name}</h4>${gr.items.map(p => {
         n++;
         const g = prog[p.id]; const stc = g && g.done ? 'ok' : g && g.step > 0 ? 'go' : '';
         return `<button class="pitem" data-p="${p.id}" aria-current="${p.id === PS.id}"><span class="st ${stc}" aria-label="${stc === 'ok' ? 'terminado' : stc === 'go' ? 'en curso' : 'sin empezar'}">${stc === 'ok' ? '✓' : ''}</span><span class="meta"><span class="lv">${n}. ${LV[p.lvl]}</span><span class="math xs">${R(p.x)}</span></span></button>`;
@@ -767,7 +871,7 @@ function init(){
     if (b){ PS.id = b.dataset.p; resetAttempt(); renderP(); $('#pmain').scrollIntoView({behavior:'smooth', block:'start'}); return; }
     const rb = e.target.closest('#preset');
     if (rb){
-      if (rb.dataset.confirm){ prog = {}; saveProg(); resetAttempt(); renderP(); }
+      if (rb.dataset.confirm){ curList().forEach(p => { delete prog[p.id]; }); saveProg(); resetAttempt(); renderP(); }
       else { rb.dataset.confirm = '1'; rb.textContent = 'Toca otra vez para borrar todo'; setTimeout(() => { if (rb.isConnected){ delete rb.dataset.confirm; rb.textContent = 'Reiniciar mi avance'; } }, 3500); }
     }
   });
@@ -785,14 +889,15 @@ function init(){
 
   function renderP(){
     renderPList();
-    const ex = exById(PS.id), g = pOf(ex.id), n = ex.steps.length, idx = PRACTICE.indexOf(ex);
+    const LIST = curList(), ex = exById(PS.id), g = pOf(ex.id), n = ex.steps.length, idx = LIST.indexOf(ex);
     const cat = CATS.find(c => c.id === ex.cat);
     const boardX = g.done ? `${ex.x}=\\r{${slotFinalD(ex)}}` : ex.steps[g.step].x;
     let html = `
       <div class="phead">
-        <div><p class="eyebrow">${cat.name} · ${LV[ex.lvl]}</p><h2>Ejercicio ${idx + 1} de ${PRACTICE.length}</h2></div>
+        <div><p class="eyebrow">${PS.set === 'jer' ? 'Jerarquía de operaciones' : cat.name} · ${LV[ex.lvl]}</p><h2>Ejercicio ${idx + 1} de ${LIST.length}</h2></div>
         <button class="btn" id="pseeex">Ver ejemplo animado</button>
       </div>
+      ${PS.set === 'jer' ? `<p class="jrule"><b>Orden:</b><span>1. Paréntesis</span><span>2. Multiplicaciones y divisiones, de izquierda a derecha</span><span>3. Sumas y restas</span></p>` : ''}
       <div class="board sm"><div class="math">${R(boardX)}</div></div>
       <ul class="legend-row">${LEGEND.map(([k, t]) => `<li><span class="sw bx-${k}"></span>${t}</li>`).join('')}</ul>
       <div class="bar" aria-label="Avance"><span style="width:${Math.round(100 * g.step / n)}%"></span></div>
@@ -822,7 +927,7 @@ function init(){
     html += `</ol>`;
     if (g.done){
       const firsts = g.first.filter(Boolean).length, helps = g.helped.filter(Boolean).length;
-      const nextEx = PRACTICE.slice(idx + 1).find(p => !(prog[p.id] && prog[p.id].done)) || PRACTICE.find(p => !(prog[p.id] && prog[p.id].done));
+      const nextEx = LIST.slice(idx + 1).find(p => !(prog[p.id] && prog[p.id].done)) || LIST.find(p => !(prog[p.id] && prog[p.id].done));
       html += `<div class="finish">
         <h3>${helps === 0 && firsts === n ? '¡Perfecto! Todo al primer intento.' : '¡Ejercicio terminado!'}</h3>
         <div class="stats"><span><b>${firsts}</b> de ${n} pasos al primer intento</span><span><b>${helps}</b> ${helps === 1 ? 'paso' : 'pasos'} con ayuda</span></div>
@@ -948,4 +1053,5 @@ function init(){
 }
 </script>
 
-</body></html>
+</body>
+</html>
